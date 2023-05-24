@@ -1,0 +1,189 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model prjMovieHolic.ViewModels.CListSeatViewModel
+<div id="page2">
+    <div class="body1">
+        <div class="">
+            <div class="body3">
+                <div class="main">
+                    <!-- content -->
+                    <section id="content">
+                        <div class="wrapper">
+                            <!--步驟圈圈在這裡-->
+                            <div class="orderStep">
+                                <ul>
+                                    <li class="liInOrderstep">選擇時段</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">選擇票種</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstephere">選擇座位</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">配餐選擇</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">送出訂單</li>
+                                </ul>
+                            </div>
+                            <!--這裡開始訂票-->
+                            <div class="orderDetailOnChooseSeat">
+                                <ul>
+                                    <li>
+                                        <h4>片名</h4>
+                                        <h3>@Model.movieName</h3>
+                                    </li>
+                                    <li>
+                                        <h4>影廳</h4>
+                                        <h3>@Model.theaterName</h3>
+                                        <input type="hidden" id="theaterID" value="@Model.theaterID" />
+                                    </li>
+                                    <li>
+                                        <h4>日期時間</h4>
+                                        <h3>@Model.sessionDate  @Model.sessionTime</h3>
+                                    </li>
+                                    <li>
+                                        <h4>人數</h4>
+                                        <input type="hidden" id="totalTickets" value="@Model.totalTickets" />
+                                        <h3>@Model.totalTickets</h3>
+                                    </li>
+                                    <li class="addBorderRight">
+                                        <h4>座位</h4>
+                                        <h3 id="seatNames">尚未選擇</h3>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="Tingbox">
+                                <div class="sellSold">
+                                    <div class="inSellSold">
+                                        <div class="yourSeat"></div>
+                                        <p>您的座位</p>
+                                    </div>
+                                    <div class="inSellSold">
+                                        <div class="sell"></div>
+                                        <p>未售出</p>
+                                    </div>
+                                    <div class="inSellSold">
+                                        <div class="sold"></div>
+                                        <p>已售出</p>
+                                    </div>
+                                    <div class="inSellSold">
+                                        <div class="loveSeat"></div>
+                                        <p>愛心座位</p>
+                                    </div>
+                                    <div class="showLeftSeats" id="showLeftSeats"></div>
+                                </div>
+                                <div class="screen">
+                                    <h3>螢　　　　幕</h3>
+                                </div>
+                                <div class="soManySit">
+                                    @{
+                                        for (int i = 1; i <= 20; i++)
+                                        {
+                                            <div class="rowSit">
+                                                @for (int j = 1; j <= 20; j++)
+                                                {
+                                                    int seatName = (i - 1) * 20 + j;
+                                                    int seatStatus = Model.seatStatus[((i - 1) * 20) + j - 1];
+                                                    string[] classSeatStatus = new string[] { "class=sell1", "class=hidden2", "class=disabled3", "class=sold4" };
+                                                    <button type="button" onclick="clickSeatButton(event)" name="@seatName" @classSeatStatus[seatStatus-1]></button>
+                                                }
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                            <button id="nextStep" class="button toRight">下一步</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<dialog id="IamDialog" class="IamDialog">
+    <p>座位數與票數不符</p>
+    <button id="closeDialog" class="closeDialog">確認</button>
+</dialog>
+
+@section Scripts{
+    <script>
+        const theaterID = document.getElementById('theaterID');
+        const totalTickets = document.getElementById('totalTickets').value;
+        const showLeftSeats = document.getElementById('showLeftSeats');
+        const seatNames = document.getElementById('seatNames');
+        const nextStep = document.getElementById('nextStep');
+
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
+
+        function clickSeatButton(evt) {
+            const selectedSeat = evt.target.getAttribute("name");
+            const correctSeatID = (Number(theaterID.value) - 1) * 400 + Number(selectedSeat);
+            saveSeatIDinSession(correctSeatID, evt);
+        }
+
+        async function saveSeatIDinSession(correctSeatID, evt) {
+
+            if (evt.target.style.backgroundColor == 'steelblue') {
+                const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets) + '&selected=1');
+                const data = await response.text();
+                evt.target.style.backgroundColor = '#eaeaea';
+                showLeftSeats.innerHTML = data;
+                showSelectedSeat();
+            } 
+            else {
+
+                if (getComputedStyle(evt.target).backgroundColor === 'rgb(105, 105, 105)') 
+                    showLeftSeats.innerHTML = '位置已被選走囉，下次請早:))))';
+
+                else {
+                    const response = await fetch('@Url.Content("~/OrderFront/saveSeatIDinSession")?correctSeatID=' + correctSeatID + '&totalTickets=' + Number(totalTickets) + '&selected=0');
+                    const data = await response.text();
+
+                    if (data === '座位人數已滿')
+                        showLeftSeats.innerHTML = data;
+                    else {
+                        showLeftSeats.innerHTML = data;
+                        evt.target.style.backgroundColor = 'steelblue';
+                        showSelectedSeat();
+                    }
+                }
+
+            }
+        }
+
+        async function showSelectedSeat()
+        {
+            //更改上面的座位顯示
+            const response = await fetch('@Url.Content("~/OrderFront/showSelectedSeat")');
+            const datas = await response.json();
+            let showSeat = "";
+            let i=0;
+            datas.forEach((item) => {
+                if(i%2!=0)
+                showSeat += item+'<br>';
+                else 
+                showSeat+=item+'  ';
+                i++;
+            })
+            seatNames.innerHTML = showSeat;
+        }
+
+        nextStep.addEventListener('click', () => {
+            if (showLeftSeats.innerHTML == '尚可選座位：0' || showLeftSeats.innerHTML == '座位人數已滿')
+                window.location.replace('@Url.Content("~/OrderFront/ListProduct")');
+            else {
+                formdialog.showModal();
+                btnCloseDialog.addEventListener('click', () => {
+                    formdialog.close();
+                })
+            }
+        })
+
+
+    </script>
+}                                                    

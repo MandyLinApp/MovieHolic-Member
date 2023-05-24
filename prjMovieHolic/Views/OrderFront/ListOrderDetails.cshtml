@@ -1,0 +1,207 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model prjMovieHolic.ViewModels.CListOrderDetailsViewModel
+<div id="page2">
+    <div class="body1">
+        <div class="">
+            <div class="body3">
+                <div class="main">
+                    <!-- content -->
+                    <section id="content">
+                        <div class="wrapper">
+                            <!--步驟圈圈在這裡-->
+                            <div class="orderStep">
+                                <ul>
+                                    <li class="liInOrderstep">選擇時段</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">選擇票種</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">選擇座位</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstep">配餐選擇</li>
+                                    <li><img src="~/images/menu_marker.png" alt=""></li>
+                                    <li class="liInOrderstephere">送出訂單</li>
+                                </ul>
+                            </div>
+                            <!--這裡開始訂票-->
+                            <h4 class="orderBoxH4">@Model.selectedMovieName</h4>
+                            <p class="orderBoxP">@Model.selectedMoviEngeName</p>
+                            <div class="orderBox">
+                                <div>
+                                    <figure>
+                                        <img class="orderMovieImage" src="../@Model.selectedMoviePoster" alt="">
+                                    </figure>
+                                </div>
+                                <div class="pick">
+                                    <div class="alreadyOrder">
+                                        <h3>訂單內容</h3>
+                                        <ul>
+                                            <li><span>時　　間</span>@Model.selecteDate</li>
+                                            <li><span>影　　廳</span>@Model.theaterName</li>
+                                            <li><span>票種張數</span>@Model.tickets</li>
+                                            @{
+                                                string seat = "";
+                                                foreach (var item in Model.seats)
+                                                    seat += item + ",";
+                                                if (seat.Substring(seat.Length - 1) == ",")
+                                                    seat = seat.Substring(0, seat.Length - 1);
+                                            }
+                                            <li><span>座　　位</span>@seat</li>
+                                            @{
+                                                string set = "";
+                                                if (Model.set.Count == 0)
+                                                    set = "無";
+                                                foreach (var item in Model.set)
+                                                {
+                                                    set += item + "、";
+                                                }
+                                                if (set.Substring(set.Length - 1) == "、")
+                                                    set = set.Substring(0, set.Length - 1);
+                                            }
+                                            <li><span>套餐項目</span>@set</li>
+                                            <li>
+                                                <span>支付方式</span>
+                                                <input type="radio" name="paymentType" value="cash">
+                                                <label for="cash">現金</label>
+                                                <input type="radio" name="paymentType" value="creditCard">
+                                                <label for="creditcard">信用卡</label>
+                                            </li>
+                                            <li><span class="labUsingCoupon">使用優惠</span><input id="txtUsingCoupon" class="txtUsingCoupon" type="text"><input class="btnGoToCoupon" type="button" id="btnGoToCoupon" value="查看優惠"></li>
+                                            <li><span>總　　價</span><span id="totalPrice">@Model.totalPrice</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="button toRight" id="nextStep">送出</button>
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<dialog id="IamDialog" class="IamDialog">
+    @{
+        if (@Model.CouponList.Count > 0)
+        {
+            foreach (var item in Model.CouponList)
+            {
+                <div class="coupon">
+                    <div class="couponName">
+                        <img src="images/icons8-coupon-64.png" alt="">
+                        <p>MovieHolic</p>
+                    </div>
+                    <div class="couponDetail">
+                        <div>
+                            <h3>@item.FCouponType.FCouponDiscount 折</h3>
+                            <h4>結帳立即享有 @item.FCouponType.FCouponDiscount 折</h4>
+                            <h5>@item.FCouponType.FCouponTypeName 特惠</h5>
+                            <h6>有效日期：@item.FCouponType.FCouponDueDate.ToString().Substring(0,9)</h6>
+                        </div>
+                        <div class="couponRule">
+                            <a href="">使用規則</a><hr><hr><hr><hr><hr><hr />
+                            <a id="@item.FCouponId" name="@item.FCouponType.FCouponDiscount" onclick="chooseCoupon(event)">立即使用 > </a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        }
+        else
+        {
+            <p>無可使用的優惠券</p>
+        }
+
+    }
+    <button id="closeDialog" class="closeDialog">關閉</button>
+</dialog>
+
+<dialog id="anotherDialog" class="IamDialog">
+    <p id="dialogParagraph"></p>
+    <button id="confirm" class="closeDialog">關閉</button>
+</dialog>
+
+@section Scripts{
+    <script>
+        const nextStep = document.querySelector('#nextStep');
+
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
+        const btnGoToCoupon = document.getElementById('btnGoToCoupon');
+        const txtUsingCoupon = document.getElementById('txtUsingCoupon');
+
+        const anotherDialog = document.getElementById('anotherDialog');
+        const confirm = document.getElementById('confirm');
+        const dialogParagraph = document.getElementById('dialogParagraph');
+
+        const totalPrice = document.querySelector('#totalPrice');
+        let couponID;
+
+        const radioBtns = document.getElementsByName('paymentType');
+
+        btnGoToCoupon.addEventListener('click', () => {
+            formdialog.showModal();
+            btnCloseDialog.addEventListener('click', () => {
+                formdialog.close();
+            })
+        })
+
+        nextStep.addEventListener('click', async () => {
+            const radioBtnValue = await checkSelectedRadioBtn();
+            if (radioBtnValue == 'notSelectPayment') {
+                dialogParagraph.innerHTML = '尚未選擇付款方式';
+                anotherDialog.showModal();
+                confirm.addEventListener('click', () => {
+                    anotherDialog.close();
+                })
+            }
+            else {
+                console.log(couponID);
+                const response = await fetch('@Url.Content("~/OrderFront/SaveOrdertoDBandSendEmail")?totalprice=' + totalPrice.innerHTML + '&couponID=' + Number(couponID) + '&paymentType=' + radioBtnValue);
+                const data = await response.text();
+                if (data == '儲存成功') {
+                    dialogParagraph.innerHTML = '訂票成功，已將訂單明細寄到您的信箱';
+                    anotherDialog.showModal();
+                    confirm.addEventListener('click', () => {
+                        anotherDialog.close();
+                        window.location.replace('@Url.Content("~/memberFront/orderList")');
+                    })
+                }
+                else {
+                    dialogParagraph.innerHTML = '網路不穩，請稍後再試';
+                    anotherDialog.showModal();
+                    confirm.addEventListener('click', () => {
+                        anotherDialog.close();
+                    })
+                }
+            }
+        })
+
+        function chooseCoupon(event) {
+            couponID = event.target.getAttribute('id');
+            const couponTypeName = event.target.getAttribute('name');
+            txtUsingCoupon.value = couponTypeName + '折';
+
+            let total = totalPrice.innerHTML
+            total = (Number(couponTypeName) * total / 100).toFixed();
+            totalPrice.innerHTML = total;
+            formdialog.close();
+        }
+
+        function checkSelectedRadioBtn() {
+            for (const radioBtn of radioBtns) {
+                if (radioBtn.checked)
+                    return (radioBtn.value);
+            }
+            return 'notSelectPayment';
+        }
+
+
+    </script>
+    }

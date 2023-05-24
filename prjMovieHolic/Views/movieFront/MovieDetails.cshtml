@@ -1,0 +1,324 @@
+﻿@model prjMovieHolic.ViewModels.CMovieFrontViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+<!-- Bootstrap ICONS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+<link rel="stylesheet" href="~/css/style.css" >
+<link rel="stylesheet" href="~/css/myStyle.css" >
+
+
+
+
+<style>
+    .star {
+        color: #ffa201;
+        font-size: 25px;
+    }
+
+    .clamp-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 7; /* number of lines to show */
+        -webkit-box-orient: vertical;
+    }
+
+    .left{
+        margin-top:80px;
+    }
+    #niniImagesPlace {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .coverflow-slide {
+        display: none;
+        position: absolute;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+
+
+
+<div id="page2">
+    <div class="body1">
+        <div class="body3">
+            <div class="main">
+                <!-- content -->
+                <div class="wrapper">
+                    <div class="moviePage">
+                        <div class="posterPlace">
+                            <img src="~/@Model.tMovie.FPosterPath" alt="">
+                            
+                            <div id="niniImagesPlace">
+                                <img id="slide1" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0001.jpg"
+                                     alt="Slide 1">
+                                <img id="slide2" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0002.jpg"
+                                     alt="Slide 2">
+                                <img id="slide3" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0003.jpg"
+                                     alt="Slide 3">
+                                <img id="slide4" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0004.jpg"
+                                     alt="Slide 4">
+                                <img id="slide5" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0005.jpg"
+                                     alt="Slide 5">
+                                <img id="slide6" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0006.jpg"
+                                     alt="Slide 6">
+                                <img id="slide7" class="coverflow-slide" src="/images/movieImages/21/fx_fgen56791350_0007.jpg"
+                                     alt="Slide 7">
+                                <button id="next-button"></button>
+                            </div>
+                        </div>
+                        <div class="movie">
+                            <div class="fiveStar">
+                                <div class="star">
+                                    <span class="bi bi-star-fill"></span>
+                                    <span class="bi bi-star-fill"></span>
+                                    <span class="bi bi-star-fill"></span>
+                                    <span class="bi bi-star-fill"></span>
+                                    <span class="bi bi-star-fill"></span>
+                                </div>
+                                
+                            </div>
+                                
+                            <h3>@Model.tMovie.FNameCht</h3>
+                            <h4>@Model.tMovie.FNameEng</h4>
+                            <div class="somethingAboutMovie">
+                                <ul>
+                                    <li class="fatLi">級　別</li>
+                                    <li><img src="~/@Model.tMovie.FRating.FImagePath" alt="">　@Model.tMovie.FRating.FNameCht</li>
+                                </ul>
+                                <ul>
+                                    <li class="fatLi">片　長</li>
+                                    <li>@Model.tMovie.FShowLength　分鐘</li>
+                                </ul>
+                                <ul>
+                                    <li class="fatLi">上映日</li>
+                                    <li>@Model.tMovie.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                </ul>
+                                <ul>
+                                    <li class="fatLi">類　型</li>
+                                    <li>
+                                        <a href=""> @Model.TypeListNames</a>                                        
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li class="fatLi">演　員</li>
+                                    <li>@Model.ActorListNames</li>
+                                </ul>
+                                <ul>
+                                    <li class="fatLi">導　演</li>
+                                    <li>@Model.DirectorListNames</li>
+                                </ul>
+                            </div>
+                            <div class="movieIntroduce">
+                                <ul>
+                                    <li class="fatLi">簡　介</li>
+                                    <li class="clamp-text">
+                                        @Model.tMovie.FInteroduce
+                                    </li>
+                                </ul>
+                                <input class="myButton" id="toggleButton" type="button" value="更多／更少" style="margin-left: 30px">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="myBr"></div>
+                    <div class="hotMoviePlaceLine">
+                        <ul class="hotMoviePlaceLineMenu">
+                            <li style="font-size: 26px;">預告片</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <iframe class="video" width="921" height="497" src="@Model.tMovie.FTrailerLink"
+                                title=@Model.tMovie.FNameCht frameborder="0" allow="accelerometer; autoplay;
+                                clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
+                        <div class="myBr"></div>
+
+                        <div class="hotMoviePlaceLine">
+                            <ul class="hotMoviePlaceLineMenu">
+                                <li style="font-size: 26px;">電影評論</li>
+                                <li><a href="">發表我的評論→</a></li>
+                            </ul>
+                        </div>                        
+                        <div class="myBr"></div>
+                        <div class="commentPlaceBox">
+                            <div class="starLevel">
+                                <ul>
+                                    <li><h3>4.82/5</h3></li>
+                                    <li><h6>(39)</h6></li>
+                                </ul>
+                            </div>
+                            <div class="commentPlace">
+                                <div class="commentPlaceTop">
+                                    <ul>
+                                        <li>安妮雅</li>
+                                        <li>星星之所在</li>
+                                        <li>2022-12-33</li>
+                                    </ul>
+                                </div>                                                        
+                                <b>會員的評論</b>
+                            </div>          
+                            <div class="commentPlace">
+                                <div class="commentPlaceTop">
+                                    <ul>
+                                        <li>安妮雅</li>
+                                        <li>星星之所在</li>
+                                        <li>2022-12-33</li>
+                                    </ul>
+                                </div>
+                                <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
+                            </div>
+                            <div class="commentPlace">
+                                <div class="commentPlaceTop">
+                                    <ul>
+                                        <li>安妮雅</li>
+                                        <li>星星之所在</li>
+                                        <li>2022-12-33</li>
+                                    </ul>
+                                </div>
+                                <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
+                            </div>
+                            <div class="commentPlace">
+                                <div class="commentPlaceTop">
+                                    <ul>
+                                        <li>安妮雅</li>
+                                        <li>星星之所在</li>
+                                        <li>2022-12-33</li>
+                                    </ul>
+                                </div>
+                                <b>會員的評論會員的評論會員的評論會員的評論</b>
+                            </div>
+                            <div class="commentPlace">
+                                <div class="commentPlaceTop">
+                                    <ul>
+                                        <li>安妮雅</li>
+                                        <li>星星之所在</li>
+                                        <li>2022-13-33</li>
+                                    </ul>
+                                </div>
+                                <b>會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論會員的評論</b>
+                            </div>
+                            <div class="cmtPageSelector">
+                                <h4><a class="action prev"><i class="bi bi-arrow-left"></i></a>　<a class="current">1</a>　<a>2</a>　<a>3</a>　<a>4</a>　<a>5</a>　<a class="action next"><i class="bi bi-arrow-right"></i></a></h4>
+                            </div>
+                        </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var slides = $('.coverflow-slide');
+            var currentIndex = 0;
+
+            // 显示第一张幻灯片
+            slides.eq(currentIndex).show();
+
+            // 设置下一页按钮的点击事件
+            $('#next-button').click(function () {
+                slides.eq(currentIndex).hide();
+                currentIndex = (currentIndex + 1) % slides.length;
+                slides.eq(currentIndex).show();
+            });
+
+            setInterval(function () {
+                $('#next-button').click();
+            }, 3000);  // 3000毫秒 = 3秒
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+                crossorigin="anonymous"></script>
+        <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "../api/LoadShortCmts/average-star-level/@Model.tMovie.FId",
+                dataType: "json",
+                success: function (result, status, xhr) {
+                    drawStars(result.starLevel);
+                    
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                }
+            });
+        });
+        function drawStars(averageStars){
+            // 通过变量设置评分值
+            var starLevel = averageStars; // 假设评分为4.5
+
+            // 根据评分值设置星星显示
+            var fullStars = Math.floor(starLevel);
+            var halfStar = (starLevel % 1) >= 0.5;
+
+            // 设置星星的样式类
+            var starLevelContainer = document.querySelector('.star');
+            starLevelContainer.innerHTML = '';
+
+            for (var i = 0; i < fullStars; i++) {
+                var star = document.createElement('span');
+                star.classList.add('bi', 'bi-star-fill');
+                starLevelContainer.appendChild(star);
+            }
+
+            if (halfStar) {
+                var halfStar = document.createElement('span');
+                halfStar.classList.add('bi', 'bi-star-half');
+                starLevelContainer.appendChild(halfStar);
+            }
+            else if (starLevel - fullStars > 0) {
+                var emptyStar = document.createElement('span');
+                emptyStar.classList.add('bi', 'bi-star');
+                starLevelContainer.appendChild(emptyStar);
+            }
+
+            // 剩余的空星星
+            var emptyStars = 5 - Math.ceil(starLevel);
+            for (var i = 0; i < emptyStars; i++) {
+                var emptyStar = document.createElement('span');
+                emptyStar.classList.add('bi', 'bi-star');
+                starLevelContainer.appendChild(emptyStar);
+            }
+            var space = document.createElement('span');
+            space.innerHTML = '&nbsp;&nbsp;'; // 添加空格
+            starLevelContainer.appendChild(space);
+
+            var ratingText = document.createElement('span');
+            if (starLevel == 0) { ratingText.innerHTML = "尚無評分"; }
+            else { ratingText.innerHTML = (starLevel.toFixed(1)).toString() + " / 5.0"; }
+            // 显示 starLevel 变量到小数第一位加上字符串 " / 5.0"
+            
+            starLevelContainer.appendChild(ratingText);
+        }
+        </script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#toggleButton").click(function () {
+                    $("li").toggleClass("clamp-text");
+                });
+            });
+        </script>
+}

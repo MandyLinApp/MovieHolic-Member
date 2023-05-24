@@ -1,0 +1,120 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\images\movieActors\**" />
+    <Compile Remove="wwwroot\images\movieDirectors\**" />
+    <Compile Remove="wwwroot\images\prettyPhoto\**" />
+    <Content Remove="wwwroot\images\movieActors\**" />
+    <Content Remove="wwwroot\images\movieDirectors\**" />
+    <Content Remove="wwwroot\images\prettyPhoto\**" />
+    <EmbeddedResource Remove="wwwroot\images\movieActors\**" />
+    <EmbeddedResource Remove="wwwroot\images\movieDirectors\**" />
+    <EmbeddedResource Remove="wwwroot\images\prettyPhoto\**" />
+    <None Remove="wwwroot\images\movieActors\**" />
+    <None Remove="wwwroot\images\movieDirectors\**" />
+    <None Remove="wwwroot\images\prettyPhoto\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\images\aa.jpg" />
+    <Content Remove="wwwroot\images\aaa.jpg" />
+    <Content Remove="wwwroot\images\banner1.jpg" />
+    <Content Remove="wwwroot\images\bb.jpg" />
+    <Content Remove="wwwroot\images\bg_opacity.png" />
+    <Content Remove="wwwroot\images\bg_top_repeat.jpg" />
+    <Content Remove="wwwroot\images\bg_top_repeat2.jpg" />
+    <Content Remove="wwwroot\images\big_img1.jpg" />
+    <Content Remove="wwwroot\images\big_img2.jpg" />
+    <Content Remove="wwwroot\images\big_img3.jpg" />
+    <Content Remove="wwwroot\images\big_img4.jpg" />
+    <Content Remove="wwwroot\images\big_img5.jpg" />
+    <Content Remove="wwwroot\images\big_img6.jpg" />
+    <Content Remove="wwwroot\images\big_img7.jpg" />
+    <Content Remove="wwwroot\images\big_img8.jpg" />
+    <Content Remove="wwwroot\images\big_img9.jpg" />
+    <Content Remove="wwwroot\images\icon1.png" />
+    <Content Remove="wwwroot\images\icon2.png" />
+    <Content Remove="wwwroot\images\icon3.png" />
+    <Content Remove="wwwroot\images\icon4.png" />
+    <Content Remove="wwwroot\images\icon5.png" />
+    <Content Remove="wwwroot\images\icon6.png" />
+    <Content Remove="wwwroot\images\logo.png" />
+    <Content Remove="wwwroot\images\logo01.jpg" />
+    <Content Remove="wwwroot\images\magnify.png" />
+    <Content Remove="wwwroot\images\marker_1.gif" />
+    <Content Remove="wwwroot\images\menu_marker.png" />
+    <Content Remove="wwwroot\images\page1_img2.jpg" />
+    <Content Remove="wwwroot\images\page2_img1.jpg" />
+    <Content Remove="wwwroot\images\page2_img2.jpg" />
+    <Content Remove="wwwroot\images\page3_img1.jpg" />
+    <Content Remove="wwwroot\images\page3_img2.jpg" />
+    <Content Remove="wwwroot\images\page3_img3.jpg" />
+    <Content Remove="wwwroot\images\page3_img4.jpg" />
+    <Content Remove="wwwroot\images\page3_img5.jpg" />
+    <Content Remove="wwwroot\images\page3_img6.jpg" />
+    <Content Remove="wwwroot\images\page3_img7.jpg" />
+    <Content Remove="wwwroot\images\page3_img8.jpg" />
+    <Content Remove="wwwroot\images\page3_img9.jpg" />
+    <Content Remove="wwwroot\images\page4_img1.jpg" />
+    <Content Remove="wwwroot\images\page4_img2.jpg" />
+    <Content Remove="wwwroot\images\page5_img1.jpg" />
+    <Content Remove="wwwroot\images\search.gif" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\aa.jpg" />
+    <None Include="wwwroot\images\aaa.jpg" />
+    <None Include="wwwroot\images\bb.jpg" />
+    <None Include="wwwroot\images\bg_opacity.png" />
+    <None Include="wwwroot\images\bg_top_repeat.jpg" />
+    <None Include="wwwroot\images\bg_top_repeat2.jpg" />
+    <None Include="wwwroot\images\icon1.png" />
+    <None Include="wwwroot\images\icon2.png" />
+    <None Include="wwwroot\images\icon3.png" />
+    <None Include="wwwroot\images\icon4.png" />
+    <None Include="wwwroot\images\icon5.png" />
+    <None Include="wwwroot\images\icon6.png" />
+    <None Include="wwwroot\images\logo01.jpg" />
+    <None Include="wwwroot\images\magnify.png" />
+    <None Include="wwwroot\images\marker_1.gif" />
+    <None Include="wwwroot\images\menu_marker.png" />
+    <None Include="wwwroot\images\search.gif" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
+    <PackageReference Include="SecurityCodeScan.VS2019" Version="5.6.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\movieImages\" />
+    <Folder Include="wwwroot\images\moviePosters\" />
+    <Folder Include="wwwroot\images\movieRatings\" />
+    <Folder Include="wwwroot\images\uploads\" />
+    <Folder Include="wwwroot\images\products\" />
+  </ItemGroup>
+
+</Project>

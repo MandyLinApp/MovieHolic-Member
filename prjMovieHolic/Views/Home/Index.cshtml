@@ -1,0 +1,313 @@
+﻿@model prjMovieHolic.ViewModels.CMovieFrontViewModel
+
+
+@{
+    ViewData["Title"] = "Home Page";
+
+
+}
+
+
+<h1></h1>
+@if (ViewBag.Login == true)
+{
+   <p style="display:none">@ViewBag.UserId</p> 
+}
+
+<div id="page1">
+    <div class="body1">
+        <div class="main">
+            <!-- 這塊不要管它  拿掉會破圖-->
+            <div class="ic">More Website Templates at <a href="https://www.webmoban.net">Website Template</a></div>
+
+
+            <!-- 點播機cover Flow-->
+            <!-- 放7張會顯示五張。放五張顯示三張-->
+            <div class="relative">
+                <div id="gallery">
+                    <ul id="myRoundabout">
+                        <li><img src="~/images/星際異攻隊.jpg" alt=""></li>
+                        <li><img src="~/images/反詐騙.png" alt=""></li>
+                        <li><img src="~/images/玩命關頭.png" alt=""></li>                        
+                        <li><img src="~/images/小美人魚.jpg" alt=""></li>
+                        <li><img src="~/images/漲價公告.png" alt=""></li>
+                        <li><img src="~/images/金之國水之國.png" alt=""></li>
+                        <li><img src="~/images/變形金剛.png" alt=""></li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <!--這是旁邊快速訂票浮動視窗-->
+
+            <div class="position">
+                <p>快速訂票</p>
+                <ul class="drop-down-menu">
+                    <li>
+                        <input id="movieKeyword" style="height: 35px; font-size: 20px;" type="text" value="選擇電影" size="13" readonly>
+                        <ul id="searchMovieKeyword">
+                            @foreach(var item in Model.getTickets)
+                            {
+                                <li><button id="@item.FMovieId" onclick="goBuyTickets(event)">@item.FMovie.FNameCht</button></li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+
+            <!--熱門電影分隔線-->
+            <div class="myBr"></div>
+            <div class="hotMoviePlaceLine">
+                <ul class="hotMoviePlaceLineMenu">
+                    <li style="font-size: 26px;">現正熱映</li>
+                    <li ><a href="/MovieFront/MovieIndex#hotMovie">瀏覽所有電影...</a></li>
+                </ul>
+            </div>
+            <!-- content -->
+            <!-- 熱門電影區塊-->
+
+            <section id="">
+                <div class="line1">
+                    <div class="line2 wrapper">
+                        <div class="movieWallMovies">
+
+                            @foreach (var movie in Model.NowShowingMovies)
+                            {
+                                <!-- 熱門電影1-->
+                                <div class="movieCardBig" onload="loadFavorite('@ViewBag.UserId', '@movie.FId')">
+                                    <article class="movieCard">
+                                        <a href="/MovieFront/MovieDetails?id=@movie.FId">
+                                            <br>
+                                            <figure>
+                                                <img src="~/@movie.FPosterPath" alt="">
+                                                <img class="movieRatingInCard" style="width:40px;height:30px;" src="~/@movie.FRating.FImagePath" alt="">
+                                            </figure>
+                                            <div>
+                                                <h3>@movie.FNameCht</h3>
+                                                <ul>
+                                                    <li class="movieEnglishName">(@movie.FNameEng)</li>
+                                                    <hr>
+                                                    <li>上映日期：@movie.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                                    <li>片長：@movie.FShowLength 分鐘</li>
+                                                </ul>
+                                            </div>
+                                        </a>
+                                    </article>
+                                    <div class="likeAndBuy">
+
+                                        <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
+                                        <div>
+                                            @{
+                                                if(ViewBag.Login == false)
+                                                {
+                                                    <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                }
+                                                else
+                                                {
+                                                    bool flag = false;
+                                                    foreach(var item in Model.isFavoriteNow)
+                                                    {
+                                                        if (item.FMovieId == movie.FId)
+                                                        {
+                                                            <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:red">❤</p>
+                                                            flag = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (!flag)
+                                                    {
+                                                        <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                    }
+                                                }
+                                            }
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- / 動了會破圖-->
+            <div class="ic"> <a href="https://www.webmoban.net"></a></div>
+            <!-- / header-->
+            <div class="myBr"></div>
+            <!--第二條分隔線-->
+            <div class="notYetMoviePlaceLine">
+                <ul class="notYetMoviePlaceLineMenu">
+                    <li style="font-size: 26px;">即將上映</li>
+                    <li><a href="/MovieFront/MovieIndex#notYetMovie">瀏覽所有電影...</a></li>
+                </ul>
+            </div>
+            <!-- 即將上映電影區塊-->
+            <section id="content">
+                <div class="line1">
+                    <div class="line2 wrapper">
+                        <div class="movieWallMovies">
+                            @foreach (var movie in Model.UpcomingMovies)
+                            {
+                                <!-- 電影1-->
+                                <div class="movieCardBig" onload="loadFavorite('@ViewBag.UserId', '@movie.FId')">
+                                    <article class="movieCard">
+                                        <a href="/MovieFront/MovieDetails?id=@movie.FId">
+                                            <br>
+                                            <figure>
+                                                <img src="../@movie.FPosterPath" alt="">
+                                                <img class="movieRatingInCard" style="width:40px;height:30px;" src="~/@movie.FRating.FImagePath" alt="">
+                                            </figure>
+                                            <div>
+                                                <h3>@movie.FNameCht</h3>
+                                                <ul>
+                                                    <li class="movieEnglishName">(@movie.FNameEng)</li>
+                                                    <hr>
+                                                    <li>上映日期：@movie.FScheduleStart.ToString("yyyy/MM/dd")</li>
+                                                    <li>片長：@movie.FShowLength 分鐘</li>
+                                                </ul>
+                                            </div>
+                                        </a>
+                                    </article>
+                                    <div class="likeAndBuy">
+
+                                        <div><a class="buyNow" href="/OrderFront/ListSession?movieID=@movie.FId">Buy Now</a></div>
+                                        <div>
+                                            @{
+                                                if (ViewBag.Login == false)
+                                                {
+                                                    <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                }
+                                                else
+                                                {
+                                                    bool flag = false;
+                                                    foreach (var item in Model.isFavotiteComing)
+                                                    {
+                                                        if (item.FMovieId == movie.FId)
+                                                        {
+                                                            <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:red">❤</p>
+                                                            flag = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (!flag)
+                                                    {
+                                                        <p id="heart @movie.FId" onclick="checkLoginAndToggleFavorite('@ViewBag.UserId','@movie.FId');" data-movie-id="@movie.FId" style="color:#eaeaea">❤</p>
+                                                    }
+                                                }
+                                            }
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<dialog id="IamDialog" class="IamDialog">
+    <p>請先登入會員！</p>
+    <button id="closeDialog" class="closeDialog">確定</button>
+</dialog>
+<dialog id="IamDialogFavorite" class="IamDialog">
+    <p>收藏電影成功！</p>
+    <button id="closeDialogFavorite" class="closeDialog">確定</button>
+</dialog>
+<dialog id="IamDialogCancel" class="IamDialog">
+    <p>取消收藏成功！</p>
+    <button id="closeDialogCancel" class="closeDialog">確定</button>
+</dialog>
+@section Scripts{
+    <script>
+        const formdialog = document.getElementById('IamDialog');
+        const btnCloseDialog = document.getElementById('closeDialog');
+        const formdialogFavorite = document.getElementById('IamDialogFavorite');
+        const btnCloseDialogFavorite = document.getElementById('closeDialogFavorite');
+        const formdialogCancel = document.getElementById('IamDialogCancel');
+        const btnCloseDialogCancel = document.getElementById('closeDialogCancel');
+
+
+      
+        //先判斷是否有登入
+        function checkLoginAndToggleFavorite(userId, movieId) {
+            console.log(userId);
+            console.log(movieId);
+            if (typeof userId === "undefined" || userId === '') {
+                login();
+            } else {
+
+                favoriteChange(userId, movieId);
+            }
+        }
+        function login() {
+            console.log('Login executed');
+            formdialog.showModal();
+            btnCloseDialog.addEventListener('click', () => {
+                formdialog.close();
+                window.location.href = "/memberFront/memberLogin";
+            });
+        }
+
+        function favoriteChange(userId,movieId) {
+            var heartIcon = document.getElementById(`heart ${movieId}`);
+            console.log("Run")
+            $.ajax({
+                url: '/Home/favoriteChange',
+                type: 'POST',
+                data: { FMemberId: userId, FMovieId: movieId },
+                success: function (response) {
+                    console.log(response)
+                    if (response == "新加入收藏" || response == "取消後加入收藏") {
+                        formdialogFavorite.showModal();
+                        btnCloseDialogFavorite.addEventListener('click', () => {
+                            formdialogFavorite.close();
+                        });
+                        heartIcon.style.color = 'red';
+                    }
+                    else {
+                        formdialogCancel.showModal();
+                        btnCloseDialogCancel.addEventListener('click', () => {
+                            formdialogCancel.close();
+                        });
+                        heartIcon.style.color = '#eaeaea';
+                    }
+                    // 成功處理回應的程式碼
+                    // 例如，重新載入喜愛清單
+
+
+                },
+                error: function (xhr, status, error) {
+                    // 處理錯誤的程式碼
+                    alert('失敗')
+                }
+            });
+       }
+
+
+
+       //for快速訂票--TingTing
+        //const movieKeyword = document.getElementById('movieKeyword');
+        //const searchMovieKeyword = document.getElementById('searchMovieKeyword');
+        //movieKeyword.addEventListener('input',async()=>{
+        //    const response=await fetch('@Url.Content("~/OrderFront/SearchMovieKeyword")?keyword='+movieKeyword.value);
+        //    const data=await response.json();
+        //    console.log(data);
+        //})
+        function goBuyTickets(evt)
+        {
+            const movieID=evt.target.getAttribute('id');
+            window.location.replace('@Url.Content("~/OrderFront/ListSession")?movieID='+movieID);
+        }
+
+    </script>
+
+
+}
+
+
+
+
+
