@@ -2,7 +2,7 @@ MovieHolic-Member
 
 軟體測試工程師養成班期末專題
 
-會員系統
+會員系統 (Controller: memberFront.cs)
 1. 登入
 2. 註冊
 3. 忘記密碼
